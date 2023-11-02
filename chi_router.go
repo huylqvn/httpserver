@@ -1,7 +1,6 @@
 package httpserver
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -131,9 +130,7 @@ func (r *ChiRouter) ServeHTTP() {
 }
 
 func (ChiRouter) healthCheckHandler(w http.ResponseWriter, r *http.Request) {
-	ChiJson(w, 200, map[string]interface{}{
-		"message": "service is running",
-	})
+	NewResponse[string](200, "server is running", "", "").ToJson(w)
 }
 
 func (ChiRouter) accessControlMiddleware(next http.Handler) http.Handler {
@@ -163,10 +160,4 @@ func (r *ChiRouter) AddPath(path, method string, handler http.HandlerFunc) Route
 func (r *ChiRouter) AddMiddleware(middleware func(next http.Handler) http.Handler) Router {
 	r.middleware = append(r.middleware, middleware)
 	return r
-}
-
-func ChiJson(w http.ResponseWriter, code int, v interface{}) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(code)
-	json.NewEncoder(w).Encode(v)
 }

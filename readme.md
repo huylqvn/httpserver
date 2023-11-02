@@ -13,3 +13,11 @@ type Router interface {
 	AddMiddleware(middleware func(next http.Handler) http.Handler) Router
 }
 ```
+
+-- Generic request/response
+
+```
+type IRequest interface {
+	Validate() error
+}
+```
