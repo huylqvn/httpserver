@@ -13,7 +13,7 @@ type IRequest interface {
 
 func ParseBody[T IRequest](r *http.Request) (*T, error) {
 	var req T
-	err := json.NewDecoder(r.Body).Decode(req)
+	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		return nil, err
 	}
