@@ -2,7 +2,6 @@ package httpserver
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -11,6 +10,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/huylqvn/httpserver/log"
 )
 
 type ChiHandle struct {
@@ -97,11 +97,11 @@ func (r *ChiRouter) ServeHTTP() {
 	}
 
 	if r.prefix != "" {
-		log.Printf("version-api %s", r.prefix)
+		log.Get().Infof("version-api %s", r.prefix)
 	}
 	r.router.Route(r.prefix, func(router chi.Router) {
 		for _, h := range r.handlers {
-			log.Printf("api: %s, method: %s", h.Path, h.Method)
+			log.Get().Infof("api: %s, method: %s", h.Path, h.Method)
 			router.Method(h.Method, h.Path, h.Handler)
 		}
 	})
@@ -122,11 +122,11 @@ func (r *ChiRouter) ServeHTTP() {
 	}()
 
 	go func() {
-		log.Println("Server started on: " + r.port)
+		log.Get().Info("Server started on: " + r.port)
 		errs <- server.ListenAndServe()
 	}()
 
-	log.Println("exit", <-errs)
+	log.Get().Info("exit", <-errs)
 }
 
 func (ChiRouter) healthCheckHandler(w http.ResponseWriter, r *http.Request) {
