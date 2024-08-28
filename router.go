@@ -2,11 +2,14 @@ package httpserver
 
 import (
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
 )
 
 type Router interface {
 	Default()
 	ServeHTTP()
+	GetRouter() *chi.Mux
 	AddPrefix(prefix string) Router
 	AllowRecovery() Router
 	AllowLog() Router
