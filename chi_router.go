@@ -49,6 +49,10 @@ func (r *ChiRouter) Default() {
 		ServeHTTP()
 }
 
+func (r *ChiRouter) GetRouter() *chi.Mux {
+	return r.router
+}
+
 func (r *ChiRouter) AddPrefix(prefix string) Router {
 	r.prefix = prefix
 	return r
